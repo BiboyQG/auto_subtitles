@@ -48,7 +48,7 @@ def main():
     subtitle_style = (
         "Fontname=Noto Sans CJK SC,Fontsize=22,PrimaryColour=&H00FFFFFF,"
         "SecondaryColour=&H000000FF,OutlineColour=&HFF000000,BackColour=&H80000000,"
-        "Bold=0,Italic=0,Alignment=2,BorderStyle=4,Outline=4,Shadow=0,MarginL=10,MarginR=10,MarginV=10"
+        "Bold=0,Italic=0,Alignment=2,BorderStyle=4,Outline=4,Shadow=0,MarginL=10,MarginR=10,MarginV=7"
     )
 
     print("Saving subtitled video...")
