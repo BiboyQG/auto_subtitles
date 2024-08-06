@@ -36,6 +36,45 @@ def main():
     srt_path = "output.srt"
     print("SRT file has been created successfully to -> output.srt!")
 
+    path = video[0]
+
+    out_path = f"{filename(path)}.mp4"
+
+    print(f"Adding subtitles to {filename(path)}...")
+
+    video = ffmpeg.input(path)
+    audio = video.audio
+
+    subtitle_style = (
+        "Fontname=Noto Sans CJK SC,Fontsize=22,PrimaryColour=&H00FFFFFF,"
+        "SecondaryColour=&H000000FF,OutlineColour=&HFF000000,BackColour=&H80000000,"
+        "Bold=0,Italic=0,Alignment=2,BorderStyle=4,Outline=4,Shadow=0,MarginL=10,MarginR=10,MarginV=7"
+    )
+
+    print("Saving subtitled video...")
+    start_time = time.time()
+
+    try:
+        ffmpeg.concat(
+            video.filter('subtitles', 
+                         srt_path, 
+                         charenc='UTF-8', 
+                         force_style=subtitle_style,
+                         ), audio, v=1, a=1
+        ).output(
+            out_path,
+            vcodec='h264_nvenc',
+            acodec='aac',
+            **{'preset': 'slow', 'crf': '0'}
+                 ).run(quiet=True, overwrite_output=True)
+    except ffmpeg.Error as e:
+        print('stdout:', e.stdout.decode('utf8'))
+        print('stderr:', e.stderr.decode('utf8'))
+        raise e
+
+    print(f"Finished in {time.time() - start_time:.2f} seconds!")
+    print(f"Saved subtitled video to -> {os.path.abspath(out_path)}!")
+
 def format_time(seconds):
     td = timedelta(seconds=seconds)
     hours, remainder = divmod(td.seconds, 3600)
